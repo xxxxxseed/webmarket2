@@ -1,6 +1,12 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import com.common.JDBCUtil;
 
 import vo.Product;
 
@@ -9,10 +15,14 @@ public class ProductRepository {
 	private ArrayList<Product> listOfProducts = new ArrayList<>();
 	//싱글톤 패턴으로 객체 생성
 	private static ProductRepository instance;
+	Connection conn = null;
+	PreparedStatement pstmt = null;
+	ResultSet rs = null;
 	
 	//생성자
 	private ProductRepository() {
-		Product phone = new Product("P1234", "iphone 6s", 800000);
+		//DB 연동전 테스트 용도
+		/*Product phone = new Product("P1234", "iphone 6s", 800000);
 		phone.setDescription("4.7-inch 1334X750 Retina HD display 8-megapixel "
 					+ "iSight Camera");
 		phone.setCategory("Smart Phone");
@@ -39,7 +49,7 @@ public class ProductRepository {
 		
 		listOfProducts.add(phone);		//리스트에 phone을 추가
 		listOfProducts.add(notebook);
-		listOfProducts.add(tablet);
+		listOfProducts.add(tablet);*/
 	}
 	
 	//싱글톤 패턴의 getInstance() 정의
@@ -57,6 +67,30 @@ public class ProductRepository {
 	
 	//목록 보기
 	public ArrayList<Product> getAllProducts(){
+		try {
+			conn = JDBCUtil.getConnection();
+			String sql = "SELECT * FROM product";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Product product = new Product();
+				product.setProductId(rs.getString("p_id"));
+				product.setPname(rs.getString("p_name"));
+				product.setUnitPrice(rs.getInt("p_unitPrice"));
+				product.setDescription(rs.getString("p_description"));
+				product.setCategory(rs.getString("p_category"));
+				product.setManufacturer(rs.getString("p_manufacturer"));
+				product.setUnitsInStock(rs.getLong("p_unitsInStock"));
+				product.setCondition(rs.getString("p_condition"));
+				product.setFilename(rs.getString("p_productImage"));
+				//System.out.println(product.getFilename());
+				listOfProducts.add(product);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(conn, pstmt, rs);
+		}
 		return listOfProducts;
 	}
 	
