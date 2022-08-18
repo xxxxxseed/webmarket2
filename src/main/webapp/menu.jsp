@@ -18,7 +18,7 @@
 			<c:otherwise>
 				<li style="color: #eee; padding-top: 7px;">[<c:out value="${sessionId }" /> 님]</li>
 				<li class="nav-item"><a href="/member/logoutMember.jsp" class="nav-link">로그아웃</a></li>
-				<li class="nav-item"><a href="/member/addMember.jsp" class="nav-link">회원 가입</a></li>
+				<li class="nav-item"><a href="/member/updateMember.jsp" class="nav-link">회원 수정</a></li>
 			</c:otherwise>
 		</c:choose>
 			<li class="nav-item"><a href="/products.jsp" class="nav-link">상품 목록</a></li>
@@ -29,6 +29,7 @@
 			<li class="nav-item"><a href="/addProduct.jsp" class="nav-link">상품 등록</a></li>
 			<li class="nav-item"><a href="/editProduct.jsp?edit=update" class="nav-link">상품 수정</a></li>
 			<li class="nav-item"><a href="/editProduct.jsp?edit=delete" class="nav-link">상품 삭제</a></li>
+			<li class="nav-item"><a href="/board/boardList.jsp" class="nav-link">게시판</a></li>
 		</ul>
 	</div>
 	
