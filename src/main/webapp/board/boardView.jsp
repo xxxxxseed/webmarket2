@@ -20,6 +20,7 @@
 	
 	<div class="container">
 		<form action="/boardUpdateAction.do" method="post">
+			<input type="hidden" name="num" value="${board.num }">
 			<div class="form-group row">
 				<label class="col-sm-2">성명</label>
 				<div class="com-sm-5">
@@ -43,7 +44,13 @@
 			<div class="form-group row">
 				<div class="com-sm-3">
 					<a href="/boardListAction.do" class="btn btn-primary">목록</a>
-				</div>			
+					<c:set var="userId" value="${board.id }" />
+					<c:if test="${sessionId eq userId}">
+					<button type="submit" class="btn btn-success">수정</button>
+					<a href="/boardDeleteAction.do?num=<c:out value='${board.num }' />" 
+						onclick="return confirm('정말로 삭제하시겠습니까?')" class="btn btn-danger">삭제</a>
+					</c:if>		
+				</div>
 			</div>
 		</form>
 	</div>

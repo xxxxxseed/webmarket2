@@ -83,10 +83,35 @@ public class BoardController extends HttpServlet {
 			
 			String num = request.getParameter("num");
 			
+			//조회수 처리
+			dao.updateHit(Integer.parseInt(num));
+			
 			Board board = dao.getBoard(Integer.parseInt(num));
 			//model - board
 			request.setAttribute("board", board);
 			nextPage = "/board/boardView.jsp";
+		}else if(command.equals("/boardDeleteAction.do")) {	//삭제 처리 요청
+			String num = request.getParameter("num");
+			
+			//dao deleteBoard() 호출
+			dao.deleteBoard(Integer.parseInt(num));
+			
+			nextPage = "/boardListAction.do";
+		}else if(command.equals("/boardUpdateAction.do")) {	//수정 처리 요청
+			//입력 폼 데이터 수집
+			String subject = request.getParameter("subject");
+			String content = request.getParameter("content");
+			String num = request.getParameter("num");	//hidden 속성으로 받음
+			
+			//board 객체 생성
+			Board board = new Board();
+			board.setSubject(subject);
+			board.setContent(content);
+			board.setNum(Integer.parseInt(num));
+			
+			dao.updateBoard(board);
+			
+			nextPage = "/boardListAction.do";
 		}
 		
 		//nextPage로 포워딩 함
